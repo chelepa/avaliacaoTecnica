@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AssociateResponseDTO {
 
     private String id;
-    private String CPF;
-    private String Name;
+    private String cpf;
+    private String name;
 }

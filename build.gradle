@@ -17,7 +17,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.7.0'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 	implementation 'io.swagger.core.v3:swagger-annotations:2.2.1'
-
+	implementation 'org.modelmapper:modelmapper:3.1.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.0'
 	implementation('org.flywaydb:flyway-core')

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -11,9 +12,5 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AssociateRequestDTO {
 
-    @NotNull
-    private String CPF;
-
-    @NotNull
-    private String Name;
+    private String cpf;
 }
