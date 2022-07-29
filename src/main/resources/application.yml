@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: AvaliacaoTecnica
+  flyway:
+    enabled: true
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3307/${MYSQL_DB:TechnicalEvaluation}?createDatabaseIfNotExist=TRUE
+    username: root
+    password: root
+
+#  management:
+#    endpoints:
+#      web:
+#        exposure:
+#          include: "*"
+#    info:
+#      env:
+#        enabled: true
+#    endpoint:
+#      health:
+#        show-details: always
+#
+#  spring-doc:
+#    swagger-ui:
+#      doc-expansion: none
+#    show-actuator: true
