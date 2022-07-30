@@ -14,8 +14,6 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssociateRequestDTO {
 
-    private Integer id;
-
     @NotNull
     @NotEmpty
     private String cpf;

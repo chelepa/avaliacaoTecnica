@@ -12,10 +12,6 @@ import java.io.Serializable;
 public class AssociateEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
     @Column(name = "cpf")
     private String cpf;
 
