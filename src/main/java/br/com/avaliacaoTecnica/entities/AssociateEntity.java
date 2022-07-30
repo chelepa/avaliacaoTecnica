@@ -1,22 +1,24 @@
 package br.com.avaliacaoTecnica.entities;
 
+import javax.persistence.*;
+
 import lombok.Data;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
-@Table(name = "Associate")
-public class AssociateEntity {
+@Table(name = "tb_associate")
+public class AssociateEntity implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id_Associate")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "Cpf_Associate")
-    private Integer cpf;
+    @Column(name = "cpf")
+    private String cpf;
 
-    @Column(name = "Nm_Associate")
+    @Column(name = "name")
     private String name;
 }

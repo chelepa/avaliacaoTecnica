@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS Associate (
-  id_Associate INT NOT NULL AUTO_INCREMENT,
-  Cpf_Associate INT NOT NULL,
-  Nm_Associate VARCHAR(100) NOT NULL,
-  PRIMARY KEY (id_Associate, Cpf_Associate)
-)
+CREATE TABLE IF NOT EXISTS tb_associate (
+  id INT NOT NULL AUTO_INCREMENT,
+  cpf CHAR(11) NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+);

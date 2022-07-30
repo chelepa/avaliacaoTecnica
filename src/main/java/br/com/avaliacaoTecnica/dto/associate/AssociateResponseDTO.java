@@ -1,6 +1,5 @@
 package br.com.avaliacaoTecnica.dto.associate;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AssociateResponseDTO {
 
-    private String id;
+    private Integer id;
     private String cpf;
     private String name;
 }
