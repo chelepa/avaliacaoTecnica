@@ -99,6 +99,6 @@ public class AssociateServiceImpl implements AssociateService{
     }
 
     private AssociateEntity findByCpf(String CPF) throws Exception {
-        return repository.findByCpf(CPF).orElseThrow(() -> new Exception(String.format("Associate Not Found - CPF: %s ", CPF)));
+        return repository.findById(CPF).orElseThrow(() -> new Exception(String.format("Associate Not Found - CPF: %s ", CPF)));
     }
 }

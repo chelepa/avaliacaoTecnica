@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -12,11 +13,12 @@ import javax.validation.constraints.NotNull;
 public class GuidelinesRequestDTO {
 
     @NotNull
-    private String Name;
+    private String name;
+
     @NotNull
-    private String Description;
-    private String Status;
+    private String description;
+
     @NotNull
-    private String Time;
+    private LocalDate expirationDate;
 
 }
