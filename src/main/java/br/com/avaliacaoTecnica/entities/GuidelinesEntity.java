@@ -2,12 +2,10 @@ package br.com.avaliacaoTecnica.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -15,6 +13,7 @@ import java.time.LocalDate;
 public class GuidelinesEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -28,10 +27,10 @@ public class GuidelinesEntity implements Serializable {
     private String status;
 
     @Column(name = "date_creation")
-    private LocalDate date_creation;
+    private LocalDateTime creationDate;
 
     @Column(name = "date_expiration")
-    private LocalDate date_expiration;
+    private LocalDateTime expirationDate;
 
     @Column(name = "approved")
     private Boolean approved;
