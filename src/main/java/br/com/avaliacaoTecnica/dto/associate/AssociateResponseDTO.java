@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AssociateResponseDTO {
 
-    private Integer id;
     private String cpf;
     private String name;
+
 }

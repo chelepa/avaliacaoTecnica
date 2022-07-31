@@ -3,6 +3,7 @@ package br.com.avaliacaoTecnica.service.associate;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
+import br.com.avaliacaoTecnica.exceptions.AssociateNotFoundException;
 import br.com.avaliacaoTecnica.repository.AssociateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -82,7 +83,6 @@ public class AssociateServiceImpl implements AssociateService{
         log.info("AdditionAndFinesService.updateAdditionAndFines - Start - request: {}", request);
 
         AssociateEntity entity = findByCpf(CPF);
-        request.setId(entity.getId());
         request.setCpf(CPF);
 
         modelMapper.map(request, entity);
@@ -100,6 +100,6 @@ public class AssociateServiceImpl implements AssociateService{
     }
 
     private AssociateEntity findByCpf(String CPF) throws Exception {
-        return repository.findByCpf(CPF).orElseThrow(() -> new Exception(String.format("Associate Not Found - CPF: %s ", CPF)));
+        return repository.findById(CPF).orElseThrow(() -> new AssociateNotFoundException(String.format("Associate Not Found - CPF: [%s] ", CPF)));
     }
 }

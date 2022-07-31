@@ -1,9 +1,11 @@
 package br.com.avaliacaoTecnica.entities;
 
-import javax.persistence.*;
-
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
@@ -12,10 +14,6 @@ import java.io.Serializable;
 public class AssociateEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
-
     @Column(name = "cpf")
     private String cpf;
 

@@ -4,15 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GuidelinesResponseDTO {
 
-    private String id;
-    private String Name;
-    private String Description;
-    private String Status;
-    private String Time;
+    private Integer id;
+    private String name;
+    private String description;
+    private String status;
+    private Integer runtime;
+    private LocalDateTime creationDate;
+    private LocalDateTime expirationDate;
+    private Boolean approved;
+    private Integer amount_vote_yes;
+    private Integer amount_vote_not;
 
 }
