@@ -44,8 +44,8 @@ public class GuidelinesController {
     }
 
     @PostMapping(value = "/guidelines/start/{id}")
-    public ResponseEntity<GuidelinesResponseDTO> startGuidelines(@PathVariable(value = "id", required = true) Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<GuidelinesResponseDTO> startGuidelines(@PathVariable(value = "id", required = true) Integer id) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(service.startGuidelines(id));
     }
 
 }

@@ -18,4 +18,5 @@ public interface GuidelinesService {
 
     GuidelinesResponseDTO updateGuidelinesById(Integer Id, GuidelinesRequestDTO request) throws Exception;
 
+    GuidelinesResponseDTO startGuidelines(Integer id) throws Exception;
 }

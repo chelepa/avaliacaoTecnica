@@ -1,10 +1,11 @@
 package br.com.avaliacaoTecnica.service.guidelines;
 
-import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
+import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
-import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
+import br.com.avaliacaoTecnica.exceptions.GuidelinesNotFoundException;
+import br.com.avaliacaoTecnica.exceptions.StartGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.UpdateGuidelinesException;
 import br.com.avaliacaoTecnica.repository.GuidelinesRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +34,11 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         log.info("GuidelinesServiceImpl.createGuidelines - Start - GuidelinesRequestDTO: [{}]", request);
 
         GuidelinesEntity entity = modelMapper.map(request, GuidelinesEntity.class);
-        entity.setStatus("created");
-        entity.setCreationDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        entity.setStatus(StatusCode.CREATED.getMessage());
+        entity.setCreationDate(LocalDateTime.now());
+        if (request.getRuntime() == null) {
+            entity.setRuntime(1);
+        }
 
         repository.save(entity);
 
@@ -92,7 +94,7 @@ public class GuidelinesServiceImpl implements GuidelinesService {
 
         GuidelinesEntity entity = findById(Id);
 
-        if (entity.getStatus().equalsIgnoreCase("created")) {
+        if (entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
 
             modelMapper.map(request, entity);
 
@@ -108,11 +110,33 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         return response;
     }
 
+    @Override
+    public GuidelinesResponseDTO startGuidelines(Integer id) throws Exception {
+        log.info("GuidelinesServiceImpl.startGuidelines - Start - ID: [{}]", id);
+        GuidelinesEntity entity = findById(id);
+
+        if (entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
+
+            entity.setStatus(StatusCode.RUNNING.getMessage());
+            entity.setExpirationDate(LocalDateTime.now().plusMinutes(entity.getRuntime()));
+
+            repository.save(entity);
+        } else {
+            throw new StartGuidelinesException(String.format("Error Start Guidelines id: [%s] - Status: [%s]", id, entity.getStatus()));
+        }
+
+        GuidelinesResponseDTO response = guidelinesEntityTOGuidelinesResponseDTO(entity);
+
+        log.info("GuidelinesServiceImpl.startGuidelines - End - response: [{}]", response);
+
+        return response;
+    }
+
     private GuidelinesResponseDTO guidelinesEntityTOGuidelinesResponseDTO(GuidelinesEntity entity) {
         return modelMapper.map(entity, GuidelinesResponseDTO.class);
     }
 
     private GuidelinesEntity findById(Integer id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new Exception(String.format("Guidelines Not Found - ID: %s ", id)));
+        return repository.findById(id).orElseThrow(() -> new GuidelinesNotFoundException(String.format("Guidelines Not Found - id: [%s] ", id)));
     }
 }

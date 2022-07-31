@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,6 +24,9 @@ public class GuidelinesEntity implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "runtime")
+    private Integer runtime;
 
     @Column(name = "date_creation")
     private LocalDateTime creationDate;
