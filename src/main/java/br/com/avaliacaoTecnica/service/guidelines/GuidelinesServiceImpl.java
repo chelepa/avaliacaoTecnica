@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +33,11 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         log.info("GuidelinesServiceImpl.createGuidelines - Start - GuidelinesRequestDTO: [{}]", request);
 
         GuidelinesEntity entity = modelMapper.map(request, GuidelinesEntity.class);
+
         entity.setStatus(StatusCode.CREATED.getMessage());
+
         entity.setCreationDate(LocalDateTime.now());
+
         if (request.getRuntime() == null) {
             entity.setRuntime(1);
         }
@@ -58,6 +60,19 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         repository.findAll().forEach(entity -> response.add(guidelinesEntityTOGuidelinesResponseDTO(entity)));
 
         log.info("GuidelinesServiceImpl.getAllGuidelines - End - GuidelinesResponseDTO: [{}]", response);
+
+        return response;
+    }
+
+    @Override
+    public List<GuidelinesResponseDTO> getAllGuidelinesByStatus(String status) {
+        log.info("GuidelinesServiceImpl.getAllGuidelinesByStatus - Start - ");
+
+        List<GuidelinesResponseDTO> response = new ArrayList<>();
+
+        repository.findByStatus(status).forEach(entity -> response.add(guidelinesEntityTOGuidelinesResponseDTO(entity)));
+
+        log.info("GuidelinesServiceImpl.getAllGuidelinesByStatus - End - GuidelinesResponseDTO: [{}]", response);
 
         return response;
     }
@@ -113,11 +128,13 @@ public class GuidelinesServiceImpl implements GuidelinesService {
     @Override
     public GuidelinesResponseDTO startGuidelines(Integer id) throws Exception {
         log.info("GuidelinesServiceImpl.startGuidelines - Start - ID: [{}]", id);
+
         GuidelinesEntity entity = findById(id);
 
         if (entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
 
             entity.setStatus(StatusCode.RUNNING.getMessage());
+
             entity.setExpirationDate(LocalDateTime.now().plusMinutes(entity.getRuntime()));
 
             repository.save(entity);
@@ -128,6 +145,23 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         GuidelinesResponseDTO response = guidelinesEntityTOGuidelinesResponseDTO(entity);
 
         log.info("GuidelinesServiceImpl.startGuidelines - End - response: [{}]", response);
+
+        return response;
+    }
+
+    @Override
+    public GuidelinesResponseDTO updateStatusGuidelines(GuidelinesResponseDTO item) {
+        log.info("GuidelinesServiceImpl.updateStatusGuidelines - Start - GuidelinesResponseDTO: [{}]", item);
+
+        GuidelinesEntity entity = modelMapper.map(item, GuidelinesEntity.class);
+
+        entity.setStatus(StatusCode.CLOSED.getMessage());
+
+        repository.save(entity);
+
+        GuidelinesResponseDTO response = guidelinesEntityTOGuidelinesResponseDTO(entity);
+
+        log.info("GuidelinesServiceImpl.updateStatusGuidelines - End - GuidelinesResponseDTO: [{}]", response);
 
         return response;
     }

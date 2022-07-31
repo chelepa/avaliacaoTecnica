@@ -3,7 +3,7 @@ package br.com.avaliacaoTecnica.constants;
 public enum StatusCode {
     RUNNING("running"),
     CREATED("created"),
-    FINISHED("finished");
+    CLOSED("closed");
 
     private final String message;
 
