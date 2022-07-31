@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS tb_guidelines (
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  description VARCHAR(100) NOT NULL,
-  status VARCHAR(45) NOT NULL,
-  runtime INT NOT NULL DEFAULT 1,
-  date_creation DATETIME NOT NULL,
-  date_expiration DATETIME NULL,
+  name VARCHAR(255) NULL DEFAULT NULL,
+  description VARCHAR(255) NULL DEFAULT NULL,
+  status VARCHAR(45) NULL DEFAULT NULL,
+  runtime INT NULL DEFAULT NULL,
+  date_creation DATETIME(6) NULL DEFAULT NULL,
+  date_expiration DATETIME(6) NULL DEFAULT NULL,
   approved TINYINT NULL,
-  amount_vote_yes INT NULL,
-  amount_vote_not INT NULL,
+  amount_vote_not INT NULL DEFAULT NULL,
+  amount_vote_yes INT NULL DEFAULT NULL,
   PRIMARY KEY (id)
 );

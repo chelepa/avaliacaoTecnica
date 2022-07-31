@@ -10,23 +10,27 @@ spring:
     username: root
     password: root
 
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+
 scheduler:
   scheduler-cron-value: "1 * * * * *"
   enabled: ${ENABLE_SCHEDULER:true}
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  info:
-    env:
-      enabled: true
-  endpoint:
-    health:
-      show-details: always
-
-spring-doc:
-  swagger-ui:
-    doc-expansion: none
-  show-actuator: true
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  info:
+#    env:
+#      enabled: true
+#  endpoint:
+#    health:
+#      show-details: always
+#
+#spring-doc:
+#  swagger-ui:
+#    doc-expansion: none
+#  show-actuator: true
