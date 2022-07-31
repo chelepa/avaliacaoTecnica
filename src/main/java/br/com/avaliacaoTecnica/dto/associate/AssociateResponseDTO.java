@@ -9,4 +9,5 @@ public class AssociateResponseDTO {
 
     private String cpf;
     private String name;
+
 }
