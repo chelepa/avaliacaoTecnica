@@ -2,12 +2,16 @@ package builder;
 
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
+import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
+import br.com.avaliacaoTecnica.entities.VoteEntity;
 import br.com.avaliacaoTecnica.util.TestUtil;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GuidelinesServiceImplBuilder {
 
@@ -44,5 +48,26 @@ public class GuidelinesServiceImplBuilder {
         List<GuidelinesEntity> response = new ArrayList<>();
         response.add(MockGuidelinesEntityResponse());
         return response;
+    }
+
+    public static Optional<GuidelinesEntity> MockGuidelinesEntityResponseVote() throws IOException {
+        List<AssociateEntity> associateEntity = new ArrayList<>();
+        AssociateEntity response = new AssociateEntity();
+        response.setCpf("03300121000");
+        response.setName("Claudimir Chelepa");
+
+        associateEntity.add(response);
+
+        List<VoteEntity> listVoteEntity = new ArrayList<>();
+        VoteEntity voteEntity = new VoteEntity();
+        voteEntity.setId(1);
+        voteEntity.setIdGuidelines(MockGuidelinesEntityResponse());
+        voteEntity.setCpfAssociate(response);
+        voteEntity.setVote("SIM");
+        listVoteEntity.add(voteEntity);
+
+        GuidelinesEntity respose = TestUtil.getObjectFromFile("json/GuidelinesResponse.json", GuidelinesEntity.class);
+        respose.setVote(listVoteEntity);
+        return Optional.of(respose);
     }
 }

@@ -51,7 +51,7 @@ public class SchedulerGuidelines {
         LocalDateTime dateExpiration = item.getExpirationDate();
         if (dateNow.compareTo(dateExpiration) > 0){
             service.updateStatusGuidelines(item);
-            service.updateApprovedAndAmountVote(item);
+            service.updateApprovedAndAmountVote(item.getId());
         }
     }
 }

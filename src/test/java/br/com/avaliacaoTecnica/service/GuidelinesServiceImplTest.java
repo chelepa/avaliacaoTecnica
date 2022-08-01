@@ -141,4 +141,13 @@ public class GuidelinesServiceImplTest {
 
         verify(repository, times(1)).save(Mockito.any());
     }
+
+    @Test
+    public void void_When_updateApprovedAndAmountVote() throws Exception {
+        when(repository.findById(Mockito.any())).thenReturn(GuidelinesServiceImplBuilder.MockGuidelinesEntityResponseVote());
+
+        guidelinesService.updateApprovedAndAmountVote(1);
+
+        verify(repository, times(1)).save(Mockito.any());
+    }
 }
