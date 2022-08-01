@@ -83,9 +83,11 @@ public class AssociateServiceImpl implements AssociateService{
         log.info("AdditionAndFinesService.updateAdditionAndFines - Start - request: {}", request);
 
         AssociateEntity entity = findByCpf(CPF);
+
         request.setCpf(CPF);
 
         modelMapper.map(request, entity);
+
         repository.save(entity);
 
         AssociateResponseDTO response = associateEntityTOAssociateResponseDTO(entity);

@@ -35,4 +35,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.START_GUIDELINES, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(MemberHasAlreadyVotedException.class)
+    public final ResponseEntity<Object> handleMemberHasAlreadyVotedException(MemberHasAlreadyVotedException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.MEMBER_HAS_ALREADY_VOTED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
 }

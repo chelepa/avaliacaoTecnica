@@ -1,6 +1,6 @@
 package br.com.avaliacaoTecnica.service.guidelines;
 
-import br.com.avaliacaoTecnica.constants.Constantes;
+import br.com.avaliacaoTecnica.constants.Constants;
 import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +26,7 @@ public class SchedulerGuidelines {
     @Value("${scheduler.enabled}")
     private Boolean enabled;
 
-    @Autowired
-    private GuidelinesServiceImpl guidelinesService;
-
-    @Scheduled(cron = "${scheduler.scheduler-cron-value}", zone = Constantes.TIME_ZONE)
+    @Scheduled(cron = "${scheduler.scheduler-cron-value}", zone = Constants.TIME_ZONE)
     public void checkStatusGuidelines(){
         long timeBefore = System.currentTimeMillis();
         if(enabled) {
@@ -45,7 +42,7 @@ public class SchedulerGuidelines {
                 }
             });
 
-            log.info("SchedulerClaroPartner.checkStatusPartner - End - took: [{}]", System.currentTimeMillis()-timeBefore);
+            log.info("SchedulerGuidelines.checkStatusGuidelines - End - took: [{}]", System.currentTimeMillis()-timeBefore);
         }
     }
 

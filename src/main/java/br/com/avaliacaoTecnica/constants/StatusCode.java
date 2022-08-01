@@ -1,9 +1,9 @@
 package br.com.avaliacaoTecnica.constants;
 
 public enum StatusCode {
-    RUNNING("running"),
-    CREATED("created"),
-    CLOSED("closed");
+    RUNNING("RUNNING"),
+    CREATED("CREATED"),
+    CLOSED("CLOSED");
 
     private final String message;
 

@@ -1,5 +1,6 @@
 package br.com.avaliacaoTecnica.service.voting;
 
+import br.com.avaliacaoTecnica.constants.Constants;
 import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
@@ -8,6 +9,7 @@ import br.com.avaliacaoTecnica.dto.voting.VotingResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
 import br.com.avaliacaoTecnica.entities.VoteEntity;
+import br.com.avaliacaoTecnica.exceptions.MemberHasAlreadyVotedException;
 import br.com.avaliacaoTecnica.repository.VotingRepository;
 import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import br.com.avaliacaoTecnica.service.guidelines.GuidelinesService;
@@ -41,11 +43,11 @@ public class VotingServiceImpl implements VotingService {
         GuidelinesEntity guidelinesentity = getGuidelinesByIdResponseGuidelinesEntity(id);
 
         if (isVotingByCpf(associate, guidelinesentity)){
-            return new VotingResponseDTO("Usuario Ja Votou nessa Pauta");
+            throw new MemberHasAlreadyVotedException(String.format("Member id: [%s] has already voted", CPF));
         } else {
             populateVote(associate, guidelinesentity, request);
 
-            return new VotingResponseDTO("Voto contabilizado com Sucesso");
+            return new VotingResponseDTO(Constants.COUNTED_VOTE);
         }
     }
 
