@@ -1,8 +1,6 @@
 package br.com.avaliacaoTecnica.controllers;
 
-import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
-import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import br.com.avaliacaoTecnica.service.guidelines.GuidelinesService;
 import br.com.avaliacaoTecnica.util.TestUtil;
 import org.junit.jupiter.api.Assertions;

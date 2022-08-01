@@ -8,8 +8,81 @@ plugins {
 group = 'br.com'
 sourceCompatibility = '11'
 
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
 repositories {
 	mavenCentral()
+}
+
+//gradle test jacocoTestReport
+jacocoTestReport {
+	dependsOn test
+
+	group = "Reporting"
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = layout.buildDirectory.dir('/reports/coverage')
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it,
+					excludes: [
+							"**/com/avaliacaoTecnica/Application*",
+							"**/com/avaliacaoTecnica/constants/*",
+							"**/com/avaliacaoTecnica/dto/*",
+							"**/com/avaliacaoTecnica/entities/*",
+					])
+		}))
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			failOnViolation = true
+			element = 'BUNDLE'
+			limit {
+				counter = 'CLASS'
+				value = 'COVEREDRATIO'
+				minimum = 1.0
+			}
+			excludes = [
+					'com.avaliacaoTecnica.Application',
+					'com.avaliacaoTecnica.constants*',
+					'com.avaliacaoTecnica.dto*',
+					'com.avaliacaoTecnica.entities*',
+			]
+		}
+	}
+}
+
+def numTests = 0
+
+test {
+	beforeTest { descriptor ->
+		logger.lifecycle("Running test: " + descriptor as String)
+		numTests++
+	}
+
+	doLast {
+		println "\nnumTests executed: ${numTests}"
+	}
+
+	finalizedBy jacocoTestReport
 }
 
 dependencies {
@@ -27,6 +100,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.2'
 
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
 }
 
 tasks.named('test') {
