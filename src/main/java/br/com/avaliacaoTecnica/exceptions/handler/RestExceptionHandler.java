@@ -55,7 +55,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(VoteException.class)
-    public final ResponseEntity<Object> handleDeleteGuidelinesException(VoteException ex, WebRequest request) {
+    public final ResponseEntity<Object> handleVoteException(VoteException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.VOTE_ERROR, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }

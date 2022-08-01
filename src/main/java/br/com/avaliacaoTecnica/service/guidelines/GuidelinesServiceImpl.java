@@ -171,8 +171,8 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         return response;
     }
 
-    public void updateApprovedAndAmountVote(GuidelinesResponseDTO item) throws Exception {
-        GuidelinesEntity entity = findById(item.getId());
+    public void updateApprovedAndAmountVote(Integer id) throws Exception {
+        GuidelinesEntity entity = findById(id);
         long responseCountYes = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_YES)).count();
         long responseCountNot = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_NOT)).count();
         String approved = (responseCountYes == responseCountNot) ? StatusGuidelines.DRAWS.getMessage() : (responseCountYes > responseCountNot) ? StatusGuidelines.APPROVED.getMessage() : StatusGuidelines.DISAPPROVED.getMessage();

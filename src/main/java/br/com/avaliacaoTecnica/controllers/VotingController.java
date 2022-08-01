@@ -18,7 +18,7 @@ public class VotingController {
     private VotingService service;
 
     @PostMapping(value = "/voting/{CPF}/{id}")
-    public ResponseEntity<VotingResponseDTO> createGuidelines(@PathVariable(value = "CPF", required = true) String CPF,
+    public ResponseEntity<VotingResponseDTO> createVoting(@PathVariable(value = "CPF", required = true) String CPF,
                                                               @PathVariable(value = "id", required = true) Integer id,
                                                               @Valid @RequestBody VotingRequestDTO request) throws Exception {
 
