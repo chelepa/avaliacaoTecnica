@@ -88,4 +88,13 @@ public class GuidelinesControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    public void ValidateStatus_OK_When_startGuidelines() throws Exception {
+        Mockito.when(service.startGuidelines(Mockito.any())).thenReturn(new GuidelinesResponseDTO());
+
+        MockHttpServletResponse response = mockMvc.perform(post("/v1/guidelines/start/{id}",1)).andReturn().getResponse();
+
+        Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
