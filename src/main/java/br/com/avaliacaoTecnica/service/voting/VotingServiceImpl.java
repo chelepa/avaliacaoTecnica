@@ -3,7 +3,6 @@ package br.com.avaliacaoTecnica.service.voting;
 import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
-import br.com.avaliacaoTecnica.dto.voting.VotingDTO;
 import br.com.avaliacaoTecnica.dto.voting.VotingRequestDTO;
 import br.com.avaliacaoTecnica.dto.voting.VotingResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
@@ -44,17 +43,24 @@ public class VotingServiceImpl implements VotingService {
         if (isVotingByCpf(associate, guidelinesentity)){
             return new VotingResponseDTO("Usuario Ja Votou nessa Pauta");
         } else {
-            if (guidelinesentity.getStatus().equalsIgnoreCase(StatusCode.RUNNING.getMessage())){
-                LocalDateTime dateNow = LocalDateTime.now();
-                LocalDateTime dateExpiration = guidelinesentity.getExpirationDate();
+            populateVote(associate, guidelinesentity, request);
 
-                if (dateNow.compareTo(dateExpiration) <= 0){
-                    VotingDTO dto = new VotingDTO(associate.getCpf(), id, request.getVote());
-                    VoteEntity entity = modelMapper.map(dto, VoteEntity.class);
-                    repository.save(entity);
-                }
+            return new VotingResponseDTO("Voto contabilizado com Sucesso");
+        }
+    }
+
+    private void populateVote(AssociateEntity associate, GuidelinesEntity guidelinesentity, VotingRequestDTO request) {
+        if (guidelinesentity.getStatus().equalsIgnoreCase(StatusCode.RUNNING.getMessage())){
+            LocalDateTime dateNow = LocalDateTime.now();
+            LocalDateTime dateExpiration = guidelinesentity.getExpirationDate();
+
+            if (dateNow.compareTo(dateExpiration) <= 0){
+                VoteEntity entity = new VoteEntity();
+                entity.setCpfAssociate(associate);
+                entity.setIdGuidelines(guidelinesentity);
+                entity.setVote(request.getVote());
+                repository.save(entity);
             }
-            return new VotingResponseDTO("True");
         }
     }
 

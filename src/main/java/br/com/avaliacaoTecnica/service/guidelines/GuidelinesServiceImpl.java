@@ -4,6 +4,7 @@ import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
+import br.com.avaliacaoTecnica.entities.VoteEntity;
 import br.com.avaliacaoTecnica.exceptions.GuidelinesNotFoundException;
 import br.com.avaliacaoTecnica.exceptions.StartGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.UpdateGuidelinesException;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -164,6 +167,17 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         log.info("GuidelinesServiceImpl.updateStatusGuidelines - End - GuidelinesResponseDTO: [{}]", response);
 
         return response;
+    }
+
+    public void updateApprovedAndAmountVote(GuidelinesResponseDTO item) throws Exception {
+        GuidelinesEntity entity = findById(item.getId());
+        long responseCountYes = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase("sim")).count();
+        long responseCountNot = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase("não")).count();
+        Boolean approved = (responseCountYes > responseCountNot) ? Boolean.TRUE : Boolean.FALSE;
+        entity.setApproved(approved);
+        entity.setAmount_vote_not(Long.valueOf(responseCountNot).intValue());
+        entity.setAmount_vote_yes(Long.valueOf(responseCountYes).intValue());
+        repository.save(entity);
     }
 
     private GuidelinesResponseDTO guidelinesEntityTOGuidelinesResponseDTO(GuidelinesEntity entity) {

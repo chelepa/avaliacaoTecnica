@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -44,7 +45,8 @@ public class GuidelinesEntity implements Serializable {
     @Column(name = "amount_vote_not")
     private Integer amount_vote_not;
 
-    @OneToMany(mappedBy = "idGuidelines")
+    @OneToMany(mappedBy = "idGuidelines", fetch=FetchType.EAGER)
     private List<VoteEntity> vote;
+
 
 }
