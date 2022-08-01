@@ -2,6 +2,7 @@ package br.com.avaliacaoTecnica.service.guidelines;
 
 import br.com.avaliacaoTecnica.constants.Constants;
 import br.com.avaliacaoTecnica.constants.StatusCode;
+import br.com.avaliacaoTecnica.constants.StatusGuidelines;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
@@ -141,7 +142,7 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         }
 
         entity.setStatus(StatusCode.RUNNING.getMessage());
-
+        entity.setStartDate(LocalDateTime.now());
         entity.setExpirationDate(LocalDateTime.now().plusMinutes(entity.getRuntime()));
 
         repository.save(entity);
@@ -174,7 +175,7 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         GuidelinesEntity entity = findById(item.getId());
         long responseCountYes = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_YES)).count();
         long responseCountNot = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_NOT)).count();
-        Boolean approved = (responseCountYes > responseCountNot) ? Boolean.TRUE : Boolean.FALSE;
+        String approved = (responseCountYes == responseCountNot) ? StatusGuidelines.DRAWS.getMessage() : (responseCountYes > responseCountNot) ? StatusGuidelines.APPROVED.getMessage() : StatusGuidelines.DISAPPROVED.getMessage();
         entity.setApproved(approved);
         entity.setAmount_vote_not(Long.valueOf(responseCountNot).intValue());
         entity.setAmount_vote_yes(Long.valueOf(responseCountYes).intValue());

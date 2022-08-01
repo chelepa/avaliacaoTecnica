@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS tb_guidelines (
   status VARCHAR(45) NULL DEFAULT NULL,
   runtime INT NULL DEFAULT NULL,
   date_creation DATETIME(6) NULL DEFAULT NULL,
+  date_start DATETIME(6) NULL DEFAULT NULL,
   date_expiration DATETIME(6) NULL DEFAULT NULL,
-  approved TINYINT NULL,
+  approved VARCHAR(45) NULL DEFAULT NULL,
   amount_vote_not INT NULL DEFAULT NULL,
   amount_vote_yes INT NULL DEFAULT NULL,
   PRIMARY KEY (id)
