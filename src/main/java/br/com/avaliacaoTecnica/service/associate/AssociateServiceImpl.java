@@ -1,8 +1,10 @@
 package br.com.avaliacaoTecnica.service.associate;
 
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateRequestUpdateDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
+import br.com.avaliacaoTecnica.exceptions.AssociateExistsException;
 import br.com.avaliacaoTecnica.exceptions.AssociateNotFoundException;
 import br.com.avaliacaoTecnica.repository.AssociateRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,8 +28,10 @@ public class AssociateServiceImpl implements AssociateService{
     private ModelMapper modelMapper;
 
     @Override
-    public AssociateResponseDTO createAssociate(AssociateRequestDTO request) {
+    public AssociateResponseDTO createAssociate(AssociateRequestDTO request) throws Exception {
         log.info("AssociateServiceImpl.createAssociate - Start - AssociateResponseDTO: [{}]", request);
+
+        returnExistsCpf(request.getCpf());
 
         AssociateEntity entity = modelMapper.map(request, AssociateEntity.class);
 
@@ -79,12 +84,10 @@ public class AssociateServiceImpl implements AssociateService{
     }
 
     @Override
-    public AssociateResponseDTO updateAssociate(String CPF, AssociateRequestDTO request) throws Exception {
+    public AssociateResponseDTO updateAssociate(String CPF, AssociateRequestUpdateDTO request) throws Exception {
         log.info("AdditionAndFinesService.updateAdditionAndFines - Start - request: {}", request);
 
         AssociateEntity entity = findByCpf(CPF);
-
-        request.setCpf(CPF);
 
         modelMapper.map(request, entity);
 
@@ -103,5 +106,12 @@ public class AssociateServiceImpl implements AssociateService{
 
     private AssociateEntity findByCpf(String CPF) throws Exception {
         return repository.findById(CPF).orElseThrow(() -> new AssociateNotFoundException(String.format("Associate Not Found - CPF: [%s] ", CPF)));
+    }
+
+    private void returnExistsCpf(String CPF) throws Exception {
+        Optional<AssociateEntity> response = repository.findById(CPF);
+        if (response.isPresent()){
+            throw new AssociateExistsException("Cpf Already Registered");
+        }
     }
 }

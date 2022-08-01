@@ -9,7 +9,9 @@ import br.com.avaliacaoTecnica.dto.voting.VotingResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
 import br.com.avaliacaoTecnica.entities.VoteEntity;
+import br.com.avaliacaoTecnica.exceptions.AssociateExistsException;
 import br.com.avaliacaoTecnica.exceptions.MemberHasAlreadyVotedException;
+import br.com.avaliacaoTecnica.exceptions.VoteException;
 import br.com.avaliacaoTecnica.repository.VotingRepository;
 import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import br.com.avaliacaoTecnica.service.guidelines.GuidelinesService;
@@ -17,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -60,10 +63,19 @@ public class VotingServiceImpl implements VotingService {
                 VoteEntity entity = new VoteEntity();
                 entity.setCpfAssociate(associate);
                 entity.setIdGuidelines(guidelinesentity);
-                entity.setVote(request.getVote());
+                entity.setVote(validatorVote(request.getVote()));
                 repository.save(entity);
             }
         }
+    }
+
+    public String validatorVote(String value){
+        String response = Normalizer.normalize(value.toUpperCase(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+        if (!response.equalsIgnoreCase(Constants.VOTE_YES) && !response.equalsIgnoreCase(Constants.VOTE_NOT)){
+            throw new VoteException("the vote must be SIM or NAO");
+        }
+
+        return response;
     }
 
     private Boolean isVotingByCpf(AssociateEntity associate, GuidelinesEntity guidelinesentity) {

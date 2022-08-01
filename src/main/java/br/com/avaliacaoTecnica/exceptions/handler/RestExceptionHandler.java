@@ -41,4 +41,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.MEMBER_HAS_ALREADY_VOTED, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(AssociateExistsException.class)
+    public final ResponseEntity<Object> handleAssociateExistsException(AssociateExistsException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.ASSOCIATE_EXISTS, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(DeleteGuidelinesException.class)
+    public final ResponseEntity<Object> handleDeleteGuidelinesException(DeleteGuidelinesException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.DELETE_GUIDELINES, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
+    @ExceptionHandler(VoteException.class)
+    public final ResponseEntity<Object> handleDeleteGuidelinesException(VoteException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.VOTE_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
 }
