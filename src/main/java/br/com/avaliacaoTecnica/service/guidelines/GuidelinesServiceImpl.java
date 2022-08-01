@@ -1,9 +1,12 @@
 package br.com.avaliacaoTecnica.service.guidelines;
 
+import br.com.avaliacaoTecnica.constants.Constants;
 import br.com.avaliacaoTecnica.constants.StatusCode;
+import br.com.avaliacaoTecnica.constants.StatusGuidelines;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
+import br.com.avaliacaoTecnica.exceptions.DeleteGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.GuidelinesNotFoundException;
 import br.com.avaliacaoTecnica.exceptions.StartGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.UpdateGuidelinesException;
@@ -96,6 +99,10 @@ public class GuidelinesServiceImpl implements GuidelinesService {
 
         GuidelinesEntity entity = findById(Id);
 
+        if (!entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
+            throw new DeleteGuidelinesException(String.format("Error Delete Guidelines, Guidelines Status is [%s]", entity.getStatus()));
+        }
+
         repository.delete(entity);
 
         log.info("GuidelinesServiceImpl.deleteGuidelinesById - End - ID: [{}]", Id);
@@ -109,14 +116,13 @@ public class GuidelinesServiceImpl implements GuidelinesService {
 
         GuidelinesEntity entity = findById(Id);
 
-        if (entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
-
-            modelMapper.map(request, entity);
-
-            repository.save(entity);
-        } else {
-            throw new UpdateGuidelinesException("Error Update Guidelines, Guidelines is running");
+        if (!entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
+            throw new UpdateGuidelinesException(String.format("Error Update Guidelines, Guidelines Status is [%s]", entity.getStatus()));
         }
+
+        modelMapper.map(request, entity);
+
+        repository.save(entity);
 
         GuidelinesResponseDTO response = guidelinesEntityTOGuidelinesResponseDTO(entity);
 
@@ -131,16 +137,15 @@ public class GuidelinesServiceImpl implements GuidelinesService {
 
         GuidelinesEntity entity = findById(id);
 
-        if (entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
-
-            entity.setStatus(StatusCode.RUNNING.getMessage());
-
-            entity.setExpirationDate(LocalDateTime.now().plusMinutes(entity.getRuntime()));
-
-            repository.save(entity);
-        } else {
+        if (!entity.getStatus().equalsIgnoreCase(StatusCode.CREATED.getMessage())) {
             throw new StartGuidelinesException(String.format("Error Start Guidelines id: [%s] - Status: [%s]", id, entity.getStatus()));
         }
+
+        entity.setStatus(StatusCode.RUNNING.getMessage());
+        entity.setStartDate(LocalDateTime.now());
+        entity.setExpirationDate(LocalDateTime.now().plusMinutes(entity.getRuntime()));
+
+        repository.save(entity);
 
         GuidelinesResponseDTO response = guidelinesEntityTOGuidelinesResponseDTO(entity);
 
@@ -164,6 +169,17 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         log.info("GuidelinesServiceImpl.updateStatusGuidelines - End - GuidelinesResponseDTO: [{}]", response);
 
         return response;
+    }
+
+    public void updateApprovedAndAmountVote(GuidelinesResponseDTO item) throws Exception {
+        GuidelinesEntity entity = findById(item.getId());
+        long responseCountYes = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_YES)).count();
+        long responseCountNot = entity.getVote().stream().filter(line -> line.getVote().equalsIgnoreCase(Constants.VOTE_NOT)).count();
+        String approved = (responseCountYes == responseCountNot) ? StatusGuidelines.DRAWS.getMessage() : (responseCountYes > responseCountNot) ? StatusGuidelines.APPROVED.getMessage() : StatusGuidelines.DISAPPROVED.getMessage();
+        entity.setApproved(approved);
+        entity.setAmount_vote_not(Long.valueOf(responseCountNot).intValue());
+        entity.setAmount_vote_yes(Long.valueOf(responseCountYes).intValue());
+        repository.save(entity);
     }
 
     private GuidelinesResponseDTO guidelinesEntityTOGuidelinesResponseDTO(GuidelinesEntity entity) {

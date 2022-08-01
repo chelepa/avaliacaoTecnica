@@ -1,6 +1,6 @@
 package br.com.avaliacaoTecnica.service.guidelines;
 
-import br.com.avaliacaoTecnica.constants.Constantes;
+import br.com.avaliacaoTecnica.constants.Constants;
 import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,25 +26,32 @@ public class SchedulerGuidelines {
     @Value("${scheduler.enabled}")
     private Boolean enabled;
 
-    @Scheduled(cron = "${scheduler.scheduler-cron-value}", zone = Constantes.TIME_ZONE)
-    public void checkStatusGuidelines() {
+    @Scheduled(cron = "${scheduler.scheduler-cron-value}", zone = Constants.TIME_ZONE)
+    public void checkStatusGuidelines(){
         long timeBefore = System.currentTimeMillis();
         if(enabled) {
             log.info("SchedulerGuidelines.checkStatusGuidelines - Start");
 
             List<GuidelinesResponseDTO> guidelines = service.getAllGuidelinesByStatus(StatusCode.RUNNING.getMessage());
 
-            guidelines.forEach(this::checkExpirationDate);
+            guidelines.forEach(item -> {
+                try {
+                    checkExpirationDate(item);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
-            log.info("SchedulerClaroPartner.checkStatusPartner - End - took: [{}]", System.currentTimeMillis()-timeBefore);
+            log.info("SchedulerGuidelines.checkStatusGuidelines - End - took: [{}]", System.currentTimeMillis()-timeBefore);
         }
     }
 
-    private void checkExpirationDate(GuidelinesResponseDTO item) {
+    private void checkExpirationDate(GuidelinesResponseDTO item) throws Exception {
         LocalDateTime dateNow = LocalDateTime.now();
         LocalDateTime dateExpiration = item.getExpirationDate();
         if (dateNow.compareTo(dateExpiration) > 0){
             service.updateStatusGuidelines(item);
+            service.updateApprovedAndAmountVote(item);
         }
     }
 }

@@ -2,11 +2,9 @@ package br.com.avaliacaoTecnica.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,4 +17,8 @@ public class AssociateEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "cpfAssociate")
+    private List<VoteEntity> vote;
+
 }

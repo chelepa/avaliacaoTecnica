@@ -23,4 +23,6 @@ public interface GuidelinesService {
     List<GuidelinesResponseDTO> getAllGuidelinesByStatus(String status);
 
     GuidelinesResponseDTO updateStatusGuidelines(GuidelinesResponseDTO item);
+
+    void updateApprovedAndAmountVote(GuidelinesResponseDTO item) throws Exception;
 }

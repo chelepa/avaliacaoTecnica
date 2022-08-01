@@ -17,6 +17,7 @@ public class GuidelinesResponseDTO {
     private String status;
     private Integer runtime;
     private LocalDateTime creationDate;
+    private LocalDateTime startDate;
     private LocalDateTime expirationDate;
     private Boolean approved;
     private Integer amount_vote_yes;

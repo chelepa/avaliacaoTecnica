@@ -1,13 +1,13 @@
 package br.com.avaliacaoTecnica.constants;
 
-public enum StatusCode {
-    RUNNING("RUNNING"),
-    CREATED("CREATED"),
-    CLOSED("CLOSED");
+public enum StatusGuidelines {
+    APPROVED("APPROVED"),
+    DISAPPROVED("DISAPPROVED"),
+    DRAWS("DRAWS");
 
     private final String message;
 
-    StatusCode(String message) {
+    StatusGuidelines(String message) {
         this.message = message;
     }
 

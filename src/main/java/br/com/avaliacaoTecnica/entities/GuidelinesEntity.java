@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,15 +32,23 @@ public class GuidelinesEntity implements Serializable {
     @Column(name = "date_creation")
     private LocalDateTime creationDate;
 
+    @Column(name = "date_start")
+    private LocalDateTime startDate;
+
     @Column(name = "date_expiration")
     private LocalDateTime expirationDate;
 
     @Column(name = "approved")
-    private Boolean approved;
+    private String approved;
 
     @Column(name = "amount_vote_yes")
     private Integer amount_vote_yes;
 
     @Column(name = "amount_vote_not")
     private Integer amount_vote_not;
+
+    @OneToMany(mappedBy = "idGuidelines", fetch=FetchType.EAGER)
+    private List<VoteEntity> vote;
+
+
 }

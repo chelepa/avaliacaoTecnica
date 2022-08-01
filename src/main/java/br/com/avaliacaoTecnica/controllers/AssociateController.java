@@ -1,6 +1,7 @@
 package br.com.avaliacaoTecnica.controllers;
 
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateRequestUpdateDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
 import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class AssociateController {
     private AssociateService service;
 
     @PostMapping(value = "/associate")
-    public ResponseEntity<AssociateResponseDTO> createAssociate(@Valid @RequestBody AssociateRequestDTO request) {
+    public ResponseEntity<AssociateResponseDTO> createAssociate(@Valid @RequestBody AssociateRequestDTO request) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createAssociate(request));
     }
 
@@ -39,7 +40,7 @@ public class AssociateController {
     }
 
     @PatchMapping(value = "/associate/{cpf}")
-    public ResponseEntity<AssociateResponseDTO> updateAssociateByCpf(@PathVariable(value = "cpf", required = true) String cpf, @Valid @RequestBody AssociateRequestDTO request) throws Exception {
+    public ResponseEntity<AssociateResponseDTO> updateAssociateByCpf(@PathVariable(value = "cpf", required = true) String cpf, @Valid @RequestBody AssociateRequestUpdateDTO request) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(service.updateAssociate(cpf, request));
     }
 }
