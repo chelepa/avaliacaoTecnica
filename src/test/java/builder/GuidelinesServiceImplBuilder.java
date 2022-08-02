@@ -69,4 +69,26 @@ public class GuidelinesServiceImplBuilder {
         respose.setVote(listVoteEntity);
         return Optional.of(respose);
     }
+
+    public static Optional<GuidelinesEntity> MockGuidelinesEntityResponseVote(String Status) throws IOException {
+        List<AssociateEntity> associateEntity = new ArrayList<>();
+        AssociateEntity response = new AssociateEntity();
+        response.setCpf("03300121000");
+        response.setName("Claudimir Chelepa");
+
+        associateEntity.add(response);
+
+        List<VoteEntity> listVoteEntity = new ArrayList<>();
+        VoteEntity voteEntity = new VoteEntity();
+        voteEntity.setId(1);
+        voteEntity.setIdGuidelines(MockGuidelinesEntityResponse());
+        voteEntity.setCpfAssociate(response);
+        voteEntity.setVote("SIM");
+        listVoteEntity.add(voteEntity);
+
+        GuidelinesEntity respose = TestUtil.getObjectFromFile("json/GuidelinesResponse.json", GuidelinesEntity.class);
+        respose.setVote(listVoteEntity);
+        respose.setStatus(Status);
+        return Optional.of(respose);
+    }
 }

@@ -59,4 +59,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.VOTE_ERROR, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
+
+    @ExceptionHandler(CanceledGuidelinesException.class)
+    public final ResponseEntity<Object> handleCanceledGuidelinesException(CanceledGuidelinesException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ErrorCodes.CANCELED_GUIDELINES_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
 }

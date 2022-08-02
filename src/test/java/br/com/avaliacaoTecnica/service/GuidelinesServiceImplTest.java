@@ -1,7 +1,9 @@
 package br.com.avaliacaoTecnica.service;
 
+import br.com.avaliacaoTecnica.constants.StatusCode;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
+import br.com.avaliacaoTecnica.exceptions.CanceledGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.DeleteGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.StartGuidelinesException;
 import br.com.avaliacaoTecnica.exceptions.UpdateGuidelinesException;
@@ -149,5 +151,23 @@ public class GuidelinesServiceImplTest {
         guidelinesService.updateApprovedAndAmountVote(1);
 
         verify(repository, times(1)).save(Mockito.any());
+    }
+
+    @Test
+    public void GuidelinesResponseDTO_When_canceledGuidelines() throws Exception {
+        when(repository.findById(Mockito.any())).thenReturn(GuidelinesServiceImplBuilder.MockGuidelinesEntityResponseVote());
+
+        guidelinesService.canceledGuidelines(1);
+
+        verify(repository, times(1)).save(Mockito.any());
+    }
+
+    @Test
+    public void CanceledGuidelinesException_When_canceledGuidelines() throws Exception {
+        when(repository.findById(Mockito.any())).thenReturn(GuidelinesServiceImplBuilder.MockGuidelinesEntityResponseVote(StatusCode.CREATED.getMessage()));
+
+        assertThrows(CanceledGuidelinesException.class, () -> {
+            guidelinesService.canceledGuidelines(1);
+        });
     }
 }

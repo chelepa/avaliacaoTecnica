@@ -3,6 +3,7 @@ package br.com.avaliacaoTecnica.constants;
 public enum StatusGuidelines {
     APPROVED("APPROVED"),
     DISAPPROVED("DISAPPROVED"),
+    CANCELED("CANCELED"),
     DRAWS("DRAWS");
 
     private final String message;

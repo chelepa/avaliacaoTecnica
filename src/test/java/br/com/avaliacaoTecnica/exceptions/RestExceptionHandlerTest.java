@@ -66,4 +66,10 @@ public class RestExceptionHandlerTest {
         VoteException response = new VoteException("VoteException");
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restExceptionHandler.handleVoteException(response, request).getStatusCode());
     }
+
+    @Test
+    public void handleCanceledGuidelinesException() {
+        CanceledGuidelinesException response = new CanceledGuidelinesException("CanceledGuidelinesException");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, restExceptionHandler.handleCanceledGuidelinesException(response, request).getStatusCode());
+    }
 }

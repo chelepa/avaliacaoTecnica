@@ -113,7 +113,7 @@ Para a inicialização da aplicação e necessario realizar algumas configuraç�
         "runtime": 0
      }
      ```
-  6. Inicializar Uma Pauta cadsatrada pelo Id:
+  6. Inicializar Uma Pauta cadastrada pelo Id:
      ```
      End Point Responsavel pela inicialização da Pauta com esse end Point sera cadastrada a start_date e
      end_date da pauta, apartir desse ponto o scheduler vai ficar monitorando para quando a data de
@@ -121,6 +121,15 @@ Para a inicialização da aplicação e necessario realizar algumas configuraç�
      ```
      ```
      /V1/guidelines/start/{id} ['POST']
+     ```
+  7. Cancelar Uma Pauta cadastrada pelo Id:
+     ```
+        End Point responsavel por efetuar o cancelamento da Pauta, mas so e possivel realizar
+     o cancelamento se a pauta em questão estiver com status de RUNNING, caso contrario ira
+     retornar uma exception para o usuario que solicitou o cancelamento
+     ```
+     ```
+     /V1/guidelines/canceled/{id} ['POST']
      ```
 ### Voting
   1. Cadastro de votos:
