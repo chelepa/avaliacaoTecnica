@@ -1,7 +1,8 @@
 package br.com.avaliacaoTecnica.constants;
 
 public enum ErrorCodes {
-    VOTE_ERROR("VoteException"),
+    VOTE_ERROR("Error Vote"),
+    CANCELED_GUIDELINES_ERROR("Canceled Guidelines Error"),
     DELETE_GUIDELINES("Error Delete Guidelines"),
     ASSOCIATE_EXISTS("Associate Exists"),
     UPDATE_GUIDELINES_RUNNING("update guidelines running"),

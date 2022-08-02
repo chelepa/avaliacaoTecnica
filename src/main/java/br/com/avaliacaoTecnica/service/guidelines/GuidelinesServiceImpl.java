@@ -6,10 +6,7 @@ import br.com.avaliacaoTecnica.constants.StatusGuidelines;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesRequestDTO;
 import br.com.avaliacaoTecnica.dto.guidelines.GuidelinesResponseDTO;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
-import br.com.avaliacaoTecnica.exceptions.DeleteGuidelinesException;
-import br.com.avaliacaoTecnica.exceptions.GuidelinesNotFoundException;
-import br.com.avaliacaoTecnica.exceptions.StartGuidelinesException;
-import br.com.avaliacaoTecnica.exceptions.UpdateGuidelinesException;
+import br.com.avaliacaoTecnica.exceptions.*;
 import br.com.avaliacaoTecnica.repository.GuidelinesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -180,6 +177,24 @@ public class GuidelinesServiceImpl implements GuidelinesService {
         entity.setAmount_vote_not(Long.valueOf(responseCountNot).intValue());
         entity.setAmount_vote_yes(Long.valueOf(responseCountYes).intValue());
         repository.save(entity);
+    }
+
+    @Override
+    public GuidelinesResponseDTO canceledGuidelines(Integer id) throws Exception {
+        GuidelinesEntity entity = findById(id);
+
+        if (entity.getStatus().equalsIgnoreCase(StatusCode.RUNNING.getMessage())){
+            entity.setStatus(StatusCode.CANCELED.getMessage());
+            entity.setExpirationDate(LocalDateTime.now());
+            entity.setApproved(StatusGuidelines.CANCELED.getMessage());
+            entity.setAmount_vote_not(0);
+            entity.setAmount_vote_yes(0);
+            repository.save(entity);
+
+            return guidelinesEntityTOGuidelinesResponseDTO(entity);
+        } else {
+            throw new CanceledGuidelinesException(String.format("Error Canceled Guidelines Id: [%s], it is not possible to cancel Status: [%s]", entity.getId(), entity.getStatus()));
+        }
     }
 
     private GuidelinesResponseDTO guidelinesEntityTOGuidelinesResponseDTO(GuidelinesEntity entity) {

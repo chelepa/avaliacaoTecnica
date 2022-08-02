@@ -48,4 +48,9 @@ public class GuidelinesController {
         return ResponseEntity.status(HttpStatus.OK).body(service.startGuidelines(id));
     }
 
+    @PostMapping(value = "/guidelines/canceled/{id}")
+    public ResponseEntity<GuidelinesResponseDTO> canceledGuidelines(@PathVariable(value = "id", required = true) Integer id) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(service.canceledGuidelines(id));
+    }
+
 }

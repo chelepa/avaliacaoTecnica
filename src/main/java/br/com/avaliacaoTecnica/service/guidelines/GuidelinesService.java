@@ -25,4 +25,6 @@ public interface GuidelinesService {
     GuidelinesResponseDTO updateStatusGuidelines(GuidelinesResponseDTO item);
 
     void updateApprovedAndAmountVote(Integer id) throws Exception;
+
+    GuidelinesResponseDTO canceledGuidelines(Integer id) throws Exception;
 }
