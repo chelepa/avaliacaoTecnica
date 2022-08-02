@@ -18,7 +18,7 @@ public class AssociateEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "cpfAssociate")
+    @OneToMany(mappedBy = "cpfAssociate", fetch=FetchType.EAGER)
     private List<VoteEntity> vote;
 
 }

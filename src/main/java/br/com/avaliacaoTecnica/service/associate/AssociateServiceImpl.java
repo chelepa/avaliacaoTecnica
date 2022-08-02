@@ -3,6 +3,7 @@ package br.com.avaliacaoTecnica.service.associate;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestUpdateDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateVoteResponseDTO;
 import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.exceptions.AssociateExistsException;
 import br.com.avaliacaoTecnica.exceptions.AssociateNotFoundException;
@@ -66,6 +67,19 @@ public class AssociateServiceImpl implements AssociateService{
         AssociateResponseDTO response = associateEntityTOAssociateResponseDTO(entity);
 
         log.info("AssociateServiceImpl.getAssociateByCpf - Start - AssociateResponseDTO: [{}]", response);
+
+        return response;
+    }
+
+    @Override
+    public AssociateVoteResponseDTO getAssociateVoteByCpf(String CPF) throws Exception {
+        log.info("AssociateServiceImpl.getAssociateVoteByCpf - Start - CPF: [{}]", CPF);
+
+        AssociateEntity entity = findByCpf(CPF);
+
+        AssociateVoteResponseDTO response = modelMapper.map(entity, AssociateVoteResponseDTO.class);
+
+        log.info("AssociateServiceImpl.getAssociateVoteByCpf - Start - AssociateResponseDTO: [{}]", response);
 
         return response;
     }
