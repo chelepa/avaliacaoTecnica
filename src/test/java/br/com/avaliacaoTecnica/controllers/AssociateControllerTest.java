@@ -1,6 +1,7 @@
 package br.com.avaliacaoTecnica.controllers;
 
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateVoteResponseDTO;
 import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import br.com.avaliacaoTecnica.util.TestUtil;
 import org.junit.jupiter.api.Assertions;
@@ -82,6 +83,15 @@ public class AssociateControllerTest {
         MockHttpServletResponse response = mockMvc.perform(patch("/v1/associate/{cpf}","03300121001")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.readJsonFile("json/UpdateAssociate.json"))).andReturn().getResponse();
+
+        Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    public void ValidateStatus_OK_When_getAssociateVoteByCpf() throws Exception {
+        when(service.getAssociateVoteByCpf(Mockito.any())).thenReturn(new AssociateVoteResponseDTO());
+
+        MockHttpServletResponse response = mockMvc.perform(get("/v1/associate/vote/{cpf}", "03300121001")).andReturn().getResponse();
 
         Assertions.assertEquals(HttpStatus.OK.value(), response.getStatus());
     }

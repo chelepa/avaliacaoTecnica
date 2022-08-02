@@ -3,6 +3,7 @@ package br.com.avaliacaoTecnica.service.associate;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestUpdateDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateVoteResponseDTO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface AssociateService {
     ResponseEntity<Void> deleteAssociateByCpf(String CPF) throws Exception;
 
     AssociateResponseDTO updateAssociate(String CPF, AssociateRequestUpdateDTO request) throws Exception;
+
+    AssociateVoteResponseDTO getAssociateVoteByCpf(String cpf) throws Exception;
 }

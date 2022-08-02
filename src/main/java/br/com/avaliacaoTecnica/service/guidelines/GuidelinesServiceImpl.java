@@ -41,7 +41,7 @@ public class GuidelinesServiceImpl implements GuidelinesService {
 
         entity.setCreationDate(LocalDateTime.now());
 
-        if (request.getRuntime() == null) {
+        if (request.getRuntime() == null || request.getRuntime() <= 0) {
             entity.setRuntime(1);
         }
 

@@ -6,7 +6,6 @@ import br.com.avaliacaoTecnica.entities.AssociateEntity;
 import br.com.avaliacaoTecnica.entities.GuidelinesEntity;
 import br.com.avaliacaoTecnica.entities.VoteEntity;
 import br.com.avaliacaoTecnica.util.TestUtil;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;

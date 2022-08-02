@@ -3,6 +3,7 @@ package br.com.avaliacaoTecnica.controllers;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateRequestUpdateDTO;
 import br.com.avaliacaoTecnica.dto.associate.AssociateResponseDTO;
+import br.com.avaliacaoTecnica.dto.associate.AssociateVoteResponseDTO;
 import br.com.avaliacaoTecnica.service.associate.AssociateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,11 @@ public class AssociateController {
     @GetMapping(value = "/associate/{cpf}")
     public ResponseEntity<AssociateResponseDTO> getAssociateByCpf(@PathVariable(value = "cpf", required = true) String cpf) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAssociateByCpf(cpf));
+    }
+
+    @GetMapping(value = "/associate/vote/{cpf}")
+    public ResponseEntity<AssociateVoteResponseDTO> getAssociateVoteByCpf(@PathVariable(value = "cpf", required = true) String cpf) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAssociateVoteByCpf(cpf));
     }
 
     @DeleteMapping(value = "/associate/{cpf}")
