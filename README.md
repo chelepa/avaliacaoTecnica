@@ -60,6 +60,14 @@ Para a inicialização da aplicação e necessario realizar algumas configuraç�
         "name": "string"
       }
       ```
+   6. Buscar os Votos pelo CPF do Associado:
+      ```
+      End Point Responsavel por buscar todos os votos ja contabilizados nas Pautas assim como 
+      o id da Pauta
+      ```
+      ```
+      /v1/associate/vote/{CPF} ['GET']
+      ```
 ### Guidelines [CRUD]
   1. Cadastro de uma Nova Pauta:
      ```

@@ -64,7 +64,11 @@ public class VotingServiceImpl implements VotingService {
                 entity.setIdGuidelines(guidelinesentity);
                 entity.setVote(validatorVote(request.getVote()));
                 repository.save(entity);
+            } else{
+                throw new VoteException(String.format("ERROR Guideline id: [%s] already breathed! Status: [%s]", guidelinesentity.getId(), guidelinesentity.getStatus()));
             }
+        } else {
+            throw new VoteException(String.format("ERROR Guideline id: [%s] already breathed! Status: [%s]", guidelinesentity.getId(), guidelinesentity.getStatus()));
         }
     }
 
